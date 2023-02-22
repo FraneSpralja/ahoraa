@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 import randomNum from "../helpers/randomNumber.js";
 
+// Definir modelo de usuario
 const userSchema = mongoose.Schema({
     nombre: {
         type: String,
@@ -26,6 +28,21 @@ const userSchema = mongoose.Schema({
         default: false
     }
 });
+
+// Hashear contraseña antes de gaurdar o en caso de ser modificada
+userSchema.pre('save', async function(next) {
+    if(!this.isModified('password')){
+        next();
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+})
+
+// Comparar contraseña hasheada con contraseña de login
+userSchema.methods.comprobarPassword = async function(passwordLogin) {
+    return await bcrypt.compare(passwordLogin, this.password);
+}
 
 const User = mongoose.model("User", userSchema);
 
