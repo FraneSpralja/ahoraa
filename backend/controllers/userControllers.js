@@ -1,4 +1,5 @@
 import generarJWT from "../helpers/generarJWT.js";
+import randomNum from "../helpers/randomNumber.js";
 import User from "../models/User.js";
 
 // Registrar usuario 
@@ -86,9 +87,73 @@ const autenticar = async(req, res) => {
     }
 }
 
+const cambiarPassword = async (req, res) => {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+
+    if(!user) {
+        const error = new Error('El usuario no existe');
+        return res.status(400).json({ msg: error.message })
+    }
+
+    if(!user.confirmado) {
+        const error = new Error('El usuario no existe o no ha sido confirmado');
+        return res.status(403).json({ msg: error.message })
+    }
+
+    try {        
+        user.token = randomNum();
+        await user.save()
+
+        res.json({ msg: "Hemos enviado un correo con las instrucciones" })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const comprobarTokenNewPassword = async (req, res) => {
+    const { token } = req.params;
+    
+    const user = await User.findOne({ token })
+    
+    if(!user) {
+        const error = new Error('La información enviada es incorrecta');
+        return res.status(400).json({ msg: error.message });
+    } else {
+        res.json({ msg: "Por favor, cambia tu contraseña" })
+    }
+}
+
+const nuevaPassword = async (req, res) => {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    const user = await User.findOne({ token });
+
+    if(!user) {
+        const error = new Error('La información enviada es incorrecta');
+        return res.status(400).json({ msg: error.message });
+    }
+
+    try {
+        
+        user.token = null;
+        user.password = password;
+
+        await user.save();
+
+        res.json({ msg: "La nueva contraseña ha sido guardada correctamente" })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export { 
     registrar,
     perfil,
     confirmar,
-    autenticar
+    autenticar,
+    cambiarPassword,
+    comprobarTokenNewPassword,
+    nuevaPassword
 };
