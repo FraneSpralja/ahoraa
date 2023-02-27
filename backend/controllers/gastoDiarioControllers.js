@@ -67,6 +67,7 @@ const actualizarGasto = async (req, res) => {
     }
 }
 
+// Eliminar gastos
 const eliminarGasto = async (req, res) => {
     const { id } = req.params;
 
