@@ -13,7 +13,7 @@ const Login = () => {
                     </h1>
                 </div>
                 <div className={styles.loginBody}>
-                    <form action="">
+                    <form className={styles.formulario} action="">
                         <div className={styles.formBox}>
                             <label 
                             className={styles.formBox_label}
@@ -22,7 +22,7 @@ const Login = () => {
                             </label>
                             <input
                             className={styles.formBox_input}
-                            type="text" 
+                            type="email" 
                             placeholder="usuario@correo.com"
                             />
                         </div>
@@ -50,13 +50,13 @@ const Login = () => {
                             className={styles.links_submit} 
                             to="/registrar"
                             >
-                                Únete a los que ahorran, regístrate
+                                Únete a los que ahorran.
                             </Link>
                             <Link 
                             className={styles.links_submit} 
                             to="/olvide-password"
                             >
-                                Recupera tu password
+                                Recupera tu password.
                             </Link>
                         </div>
                     </form>

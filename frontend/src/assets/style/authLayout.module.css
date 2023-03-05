@@ -14,13 +14,14 @@
     --btn-submit_bg: #5988df;
     --btn-submit_bg-hover: #467bdb;
 
-    /* media */
-    --screen-md: 1024px;
+    /* otros */
+    --shadow-blue: #c2dcf7;
 }
 
 .mainContainer {
     display: grid;
     grid-template-columns: 45% 55%;
+    margin-top: 50px;
     margin-left: auto;
     margin-right: auto;
     align-items: center;
@@ -92,6 +93,15 @@ form > .btnSubmit:hover {
 
 .links_submit:hover {
     text-decoration: underline;
+}
+
+.formulario {
+    width: 80%;
+    padding: 5px;
+    padding-bottom: 15px;
+    background-color: var(--white);
+    border-radius: 7px;
+    box-shadow: 0 0 25px var(--shadow-blue);
 }
 
 /* Login */
