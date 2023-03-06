@@ -56,24 +56,31 @@ const Registrar = () => {
         }
         e.target.classList.remove('errorSubmitPassword')
         
-        setAlerta({
-            msg: "La información ha sido enviada correctamente. Revisa tu correo y sigue las instrucciones"
-        })
-        setTimeout(() => {
-            setAlerta({})
-        }, 8000);
-
+        
         // Crear usuario consumiendo la api
         try {
             const url = "http://localhost:4000/api/user";
-            const respuesta = axios.post(url, {
+            await axios.post(url, {
                 nombre,
                 email,
                 ingreso,
                 password
             })
+
+            setAlerta({
+                msg: "Usuario creado correctamente. Revisa tu correo y sigue las instrucciones."
+            })
+
+            setTimeout(() => {
+                setAlerta({})
+            }, 8000);
+
+            console.log(respuesta);
         } catch (error) {
-            console.log(error)
+            setAlerta({
+                msg:error.response.data.msg,
+                error: true
+            })
         }
 
     }
