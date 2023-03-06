@@ -13,3 +13,13 @@ body {
 [type="submit"] {
     cursor: pointer;
 }
+
+/* Error formulario */
+
+.errorSubmit input:not([placeholder="Ingreso principal"]) {
+    border: 1px solid #a70202 !important;
+}
+
+.errorSubmitPassword input[type="password"] {
+    border: 1px solid #a70202 !important;
+}

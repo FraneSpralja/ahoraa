@@ -10,6 +10,7 @@
     --input_border: #d7eafd;
     --input_color: #656565;
     --input_focus: #bdddfd;
+    --input_border-error: #a70202;
     /* btn submit */
     --btn-submit_bg: #5988df;
     --btn-submit_bg-hover: #467bdb;
