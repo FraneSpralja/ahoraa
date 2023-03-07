@@ -1,10 +1,11 @@
 import generarJWT from "../helpers/generarJWT.js";
 import randomNum from "../helpers/randomNumber.js";
 import User from "../models/User.js";
+import emailRegistro from "../helpers/emailRegistro.js";
 
 // Registrar usuario 
 const registrar = async(req, res) => {
-    const { email } = req.body;
+    const { email, nombre } = req.body;
 
     // Buscar usuario en db
     const userExist = await User.findOne({ email });
@@ -19,6 +20,13 @@ const registrar = async(req, res) => {
     try {
         const user = new User(req.body);
         const userSave = await user.save();
+
+        // Enviar correo con información de registro;
+        emailRegistro({
+            email,
+            nombre,
+            token: userSave.token
+        });
 
         res.json(userSave);
     } catch (error) {
