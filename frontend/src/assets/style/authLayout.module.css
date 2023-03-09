@@ -127,6 +127,26 @@ form > .btnSubmit:hover {
     padding: 20px;
 }
 
+.links_login {
+    display: block;
+    margin: auto;
+    width: fit-content;
+    min-width: 225px;
+    box-sizing: border-box;
+    margin-top: 30px;
+    padding: 12px 30px;
+    border-radius: 7px;
+    color: var(--white);
+    background-color: var(--btn-submit_bg);
+    text-align: center;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.links_login:hover {
+    background-color: var(--btn-submit_bg-hover);
+}
+
 @media screen and (max-width: 1024px){
     .mainContainer {
         grid-template-columns: 1fr;

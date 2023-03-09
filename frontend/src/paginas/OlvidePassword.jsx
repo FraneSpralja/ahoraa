@@ -1,8 +1,41 @@
+import { useState } from "react"
 import { Link } from "react-router-dom"
+
+import Alerta from "../components/Alerta"
+import clienteAxios from "../config/axios"
 // Style
 import styles from "../assets/style/authLayout.module.css"
 
 const OlvidePassword = () => {
+    const [ email, setEmail ] = useState("");
+    const [alerta, setAlerta] = useState({})
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if(email === '') {
+            setAlerta({
+                msg: 'El email es obligatorio',
+                error: true
+            })
+        }
+
+        try {
+            const { data } = await clienteAxios.post('/user/cambiar-password', { email })
+
+            setAlerta({
+                msg: data.msg
+            })
+        } catch (error) {
+            setAlerta({
+                msg: error.response.data.msg,
+                error: true,
+            })
+        }
+    } 
+
+    const { msg } = alerta;
+
     return (
         <>
                 <div className={styles.loginHeader}>
@@ -12,7 +45,10 @@ const OlvidePassword = () => {
                     </h1>
                 </div>
                 <div className={styles.loginBody}>
-                    <form className={styles.formulario} action="">
+                    <form 
+                    className={styles.formulario}
+                    onSubmit={handleSubmit}
+                    >
                         <div className={styles.formBox}>
                             <label 
                             className={styles.formBox_label}
@@ -23,8 +59,16 @@ const OlvidePassword = () => {
                             className={styles.formBox_input}
                             type="email" 
                             placeholder="usuario@correo.com"
+                            value={email}
+                            onChange={ e => setEmail(e.target.value) }
                             />
                         </div>
+                        {
+                            msg && 
+                            <Alerta 
+                                alerta={alerta}
+                            />
+                        }
                         <div className={styles.formBox}>
                             <input 
                             type="submit" 

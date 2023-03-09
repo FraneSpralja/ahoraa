@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import axios from "axios"
+import clienteAxios from "../config/axios"
 
 import Alerta from "../components/Alerta"
 
@@ -59,8 +59,7 @@ const Registrar = () => {
         
         // Crear usuario consumiendo la api
         try {
-            const url = "http://localhost:4000/api/user";
-            await axios.post(url, {
+            await clienteAxios.post("/user", {
                 nombre,
                 email,
                 ingreso,

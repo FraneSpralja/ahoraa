@@ -2,6 +2,7 @@ import generarJWT from "../helpers/generarJWT.js";
 import randomNum from "../helpers/randomNumber.js";
 import User from "../models/User.js";
 import emailRegistro from "../helpers/emailRegistro.js";
+import emailOlvidePassword from "../helpers/emailOlvidePassword.js";
 
 // Registrar usuario 
 const registrar = async(req, res) => {
@@ -112,6 +113,13 @@ const cambiarPassword = async (req, res) => {
     try {        
         user.token = randomNum();
         await user.save()
+
+        // Enviar email con instrucciones cambio de password
+        emailOlvidePassword({
+            email,
+            nombre: user.nombre,
+            token: user.token
+        })
 
         res.json({ msg: "Hemos enviado un correo con las instrucciones" })
     } catch (error) {
