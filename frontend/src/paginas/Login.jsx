@@ -1,8 +1,49 @@
-import { Link } from "react-router-dom"
+import { useState } from "react";
+
+import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+import Alerta from "../components/Alerta";
+import clienteAxios from "../config/axios";
 // Style
-import styles from "../assets/style/authLayout.module.css"
+import styles from "../assets/style/authLayout.module.css";
 
 const Login = () => {
+
+    const navigate = useNavigate()
+
+    const [ email, setEmail ] = useState("");
+    const [ password, setPassword ] = useState("");
+    const [ alerta, setAlerta ] = useState({})
+
+    const { auth } = useAuth();
+
+    const handleSubmit = async(e) => {
+        e.preventDefault();
+
+        if([email, password].includes('')) {
+            setAlerta({
+                msg: "Todos los campos son obligatorios",
+                error: true,
+            })
+
+            return;
+        }
+
+        try {
+            const { data } = await clienteAxios.post('/user/login', { email, password })
+            localStorage.setItem('ahorrapp_token_user', data.token);
+
+            navigate('/admin');
+
+        } catch (error) {
+            setAlerta({
+                msg: error.response.data.msg,
+                error: true,
+            })
+        }
+    }
+
+    const { msg } = alerta;
     return (
         <>
                 <div className={styles.loginHeader}>
@@ -13,7 +54,10 @@ const Login = () => {
                     </h1>
                 </div>
                 <div className={styles.loginBody}>
-                    <form className={styles.formulario} action="">
+                    <form 
+                        className={styles.formulario} 
+                        action=""
+                        onSubmit={handleSubmit}>
                         <div className={styles.formBox}>
                             <label 
                             className={styles.formBox_label}
@@ -24,6 +68,8 @@ const Login = () => {
                             className={styles.formBox_input}
                             type="email" 
                             placeholder="usuario@correo.com"
+                            value={email}
+                            onChange={ e => setEmail(e.target.value) }
                             />
                         </div>
                         <div className={styles.formBox}>
@@ -36,8 +82,16 @@ const Login = () => {
                             className={styles.formBox_input}
                             type="password" 
                             placeholder="Tu password"
+                            value={password}
+                            onChange={ e => setPassword(e.target.value) }
                             />
                         </div>
+                        {
+                            msg &&
+                            <Alerta
+                                alerta={alerta}
+                            />
+                        }
                         <div className={styles.formBox}>
                             <input 
                             type="submit" 
