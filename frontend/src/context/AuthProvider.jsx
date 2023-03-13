@@ -8,13 +8,15 @@ const AuthProvider = (props) => {
 
     const { children } = props;
 
-    const [ auth, setAuth ] = useState({})
+    const [ cargando, setCargando ] = useState(true); 
+    const [ auth, setAuth ] = useState({});
 
     useEffect(() => {
         const autenticarUser = async() => {
             const token = localStorage.getItem('ahorrapp_token_user')
 
             if(!token) {
+                setCargando(false);
                 return
             }
 
@@ -34,6 +36,8 @@ const AuthProvider = (props) => {
                 setAuth({});
             }
 
+            setCargando(false);
+
         }
 
         autenticarUser();
@@ -43,7 +47,8 @@ const AuthProvider = (props) => {
         <AuthContext.Provider
             value={{
                 auth,
-                setAuth
+                setAuth,
+                cargando
             }}
         >
             { children }
